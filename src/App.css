@@ -3,8 +3,10 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10vmin;
   pointer-events: none;
+  /* not having this will make it spin instead of go in a circle */
+  padding-bottom: 15vh;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -21,7 +23,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color:#D9E3F0;
 }
 
 .App-link {

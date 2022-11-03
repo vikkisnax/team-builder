@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 const Form = props => {
     //like in the follow along, we can use this to make the inputs clear after user submits info -- in submitForm-- https://codesandbox.io/s/form-management-soln-forked-b4d4v1?file=/src/components/NoteForm.js
@@ -20,18 +20,36 @@ const Form = props => {
     // put on form so it doesn't fire http request, which will refresh page
     const submitForm = event => {
         event.preventDefault();
-        //creates new member -- prop from App comp. and clears 
-        props.addNewMember(info);
+        
         setInfo({
             name: "", email: "", role:""});
-      };
-      //shows info i typed into inputs
-      //   console.log(info);
+        //stretch: On form submit, do an if check to see if the memberToEdit prop is there or not, and run the correct functions in the if and else blocks based on that check.
+        // props.editMember(info) bc i want to show info from the editMember function inside App. and I passed in w/e i typed into the input box, so now it'll update the member.
+        if (props.memberToEdit){
+            return props.editMember(info)
+        } else {
+            //creates new member -- prop from App comp. and clears 
+            props.addNewMember(info);
+        }
+        };
+      //this \/ shows the info that i typed into inputs
+      //console.log(info);
    
+
+    //stretch
+    useEffect(() =>{
+        if (props.memberToEdit) {
+            //then return: make input boxes the member info you submitted 
+            setInfo(props.memberToEdit)
+        }
+        //dependency array so it only runs when memberToEdit changes
+    }, [props.memberToEdit]);
+
+      
     return (
     <form onSubmit={submitForm}>
         <div className="name">
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">Name </label>
             <input
                 id="name"
                 onChange={handleChanges}
@@ -42,30 +60,37 @@ const Form = props => {
         </div>
 
         <div className="email">
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Email </label>
             <input
                 id="email"
                 onChange={handleChanges}
-                type="text"
+                type="email"
                 placeholder="Enter Email"
-                value={info.email}
+                value={info.email} 
                 name="email" />
         </div>
 
         <div className="role">
         {/* make this a dropdown - watch short vid */}
-        <label htmlFor="role">Role</label> 
-            <input
+        <label htmlFor="role">Role </label> 
+            <select
                 id="role"
                 onChange={handleChanges}
-                // fix this \/
-                type="text" 
-                placeholder="Select Role"
                 value={info.role}
-                name="role" />
+                name="role" >
+                <option value="">--- Select Role ---</option>
+                <option value="Backend Engineer">Backend Engineer</option>
+                <option value="Frontend Engineer">Frontend Engineer</option>
+                <option value="Designer">Designer</option>
+                <option value="Student">Student</option>
+                <option value="Other">Other</option>
+            </select>
         </div>
+
         {/* button \/ */}
+        <p className="button">
         <button type="submit">Become a Member!</button>
+        </p>
     </form>
    )
 }
